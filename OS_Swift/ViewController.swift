@@ -14,13 +14,31 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        let url = NSURL(string: "http://rshankar.com")
+        let request = NSURLRequest(URL: url!)
+        webView.loadRequest(request)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    @IBAction func doRefresh(_: AnyObject) {
+        webView.reload()
+    }
+    
+    @IBAction func goBack(_: AnyObject) {
+        webView.goBack()
+    }
+    
+    @IBAction func goForward(_: AnyObject) {
+        webView.goForward()
+    }
+    
+    @IBAction func stop(_: AnyObject) {
+        webView.stopLoading()
+    }
 
 }
 

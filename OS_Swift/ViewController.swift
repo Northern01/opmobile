@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var webView: UIWebView!
     
@@ -21,6 +21,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        self.txtInput.delegate = self
         let url = NSURL(string: "http://rshankar.com")
         let request = NSURLRequest(URL: url!)
         webView.loadRequest(request)
@@ -53,6 +55,7 @@ class ViewController: UIViewController {
         let str = txtInput.text
         let url = NSURL(string: str!)
         let request = NSURLRequest(URL: url!)
+        webView.stopLoading();
         webView.loadRequest(request)
     }
     
@@ -77,6 +80,11 @@ class ViewController: UIViewController {
     func webView(webView: UIWebView, didFailLoadWithError error: NSError?){
         labMessage.text = "Load fail ---- " + (webView.request?.URL?.absoluteString)! + " ---- " + (error?.localizedDescription)!
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    }
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.txtInput.resignFirstResponder()
+        return true
     }
 
 }

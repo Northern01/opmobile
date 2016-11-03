@@ -23,8 +23,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         
         self.txtInput.delegate = self
-        let url = NSURL(string: "http://rshankar.com")
-        let request = NSURLRequest(URL: url!)
+        let url = URL(string: "https://www.google.com")
+        let request = URLRequest(url: url!)
         webView.loadRequest(request)
     }
 
@@ -51,38 +51,45 @@ class ViewController: UIViewController, UITextFieldDelegate {
         webView.stopLoading()
     }
     
-    @IBAction func GOClicked(sender: AnyObject) {
+    @IBAction func GOClicked(_ sender: AnyObject) {
         let str = txtInput.text
-        let url = NSURL(string: str!)
-        let request = NSURLRequest(URL: url!)
+        let url = URL(string: str!)
+        let request = URLRequest(url: url!)
         webView.stopLoading();
         webView.loadRequest(request)
     }
     
+    @IBAction func doSearchZhuqiyu(_: AnyObject) {
+        if(webView.request?.url?.absoluteString.contains("https://www.google.com"))!{
+            webView.stringByEvaluatingJavaScript(from: "document.getElementsByName('q')[0].value='朱祁林';")
+            webView.stringByEvaluatingJavaScript(from: "document.forms[0].submit(); ")
+        }
+    }
+
     
     
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool{
+    func webView(_ webView: UIWebView, shouldStartLoadWithRequest request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool{
     
         
         return true
     }
-    func webViewDidStartLoad(webView: UIWebView){
-        labMessage.text = "Loading ---- " + (webView.request?.URL?.absoluteString)!
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    func webViewDidStartLoad(_ webView: UIWebView){
+        labMessage.text = "Loading ---- " + (webView.request?.url?.absoluteString)!
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
 
     
-    func webViewDidFinishLoad(webView: UIWebView){
-        labMessage.text = "Finish ---- " + (webView.request?.URL?.absoluteString)!
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    func webViewDidFinishLoad(_ webView: UIWebView){
+        labMessage.text = "Finish ---- " + (webView.request?.url?.absoluteString)!
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError?){
-        labMessage.text = "Load fail ---- " + (webView.request?.URL?.absoluteString)! + " ---- " + (error?.localizedDescription)!
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    func webView(_ webView: UIWebView, didFailLoadWithError error: NSError?){
+        labMessage.text = "Load fail ---- " + (webView.request?.url?.absoluteString)! + " ---- " + (error?.localizedDescription)!
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.txtInput.resignFirstResponder()
         return true
     }
